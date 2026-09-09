@@ -105,10 +105,12 @@ function App() {
       <SafeAreaView>
         {gameWinner ? (
           <View style={[styles.playerInfo, styles.winnerInfo]}>
-            <Text style={styles.winnerTxt}>
+            <Text style={[styles.winnerTxt, {}]}>
               {gameWinner === 'draw'
                 ? 'Game Draw!'
-                : `${gameWinner} won the game`}
+                : `${
+                    gameWinner === 'cross' ? 'Player X' : 'Player O'
+                  } won the game 🏆`}
             </Text>
           </View>
         ) : (
@@ -180,6 +182,7 @@ const styles = StyleSheet.create({
   playerO: {
     backgroundColor: '#F7CD2E',
   },
+
   grid: {
     margin: 12,
   },
@@ -195,7 +198,7 @@ const styles = StyleSheet.create({
   },
   winnerInfo: {
     borderRadius: 8,
-    backgroundColor: '#38CC77',
+    backgroundColor: '#ffa600',
 
     shadowOpacity: 0.1,
   },
