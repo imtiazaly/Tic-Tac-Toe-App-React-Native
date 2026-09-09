@@ -17,7 +17,7 @@ export default function icons({ name }: IconProps) {
       break;
 
     default:
-      return <FontAwesome name="times" size={38} color="#0D0D0D" />;
+      return <FontAwesome name="heart" size={24} color="red" />;
   }
 }
 
