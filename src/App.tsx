@@ -57,7 +57,10 @@ function App() {
   const onChangeItem = (itemNumber: number) => {
     if (gameWinner) {
       Snackbar.show({
-        text: `Game is already over. ${gameWinner} won the game`,
+        text:
+          gameWinner === 'draw'
+            ? 'Game is already a draw'
+            : `Game is already over. ${gameWinner} won the game`,
         duration: Snackbar.LENGTH_SHORT,
       });
       return;
@@ -86,6 +89,13 @@ function App() {
       return;
     }
 
+    const isDraw = newGameState.every(item => item !== 'empty');
+
+    if (isDraw) {
+      setGameWinner('draw');
+      return;
+    }
+
     setIsCross(!isCross);
   };
 
@@ -95,7 +105,11 @@ function App() {
       <SafeAreaView>
         {gameWinner ? (
           <View style={[styles.playerInfo, styles.winnerInfo]}>
-            <Text style={styles.winnerTxt}>{gameWinner} won the game</Text>
+            <Text style={styles.winnerTxt}>
+              {gameWinner === 'draw'
+                ? 'Game Draw!'
+                : `${gameWinner} won the game`}
+            </Text>
           </View>
         ) : (
           <View
