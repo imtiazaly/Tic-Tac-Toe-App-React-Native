@@ -1,97 +1,160 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# ❌⭕ Tic Tac Toe App - React Native Game
 
-# Getting Started
+An interactive, animated 2-Player Tic-Tac-Toe game built with React Native, TypeScript, vector icons, custom spring celebration animations, and snackbar alert notifications.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+Developed as part of a **Mobile App Development & React Native Learning Series**.
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 📱 App Screenshots / Demo Preview
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+<div align="center">
 
-```sh
-# Using npm
-npm start
+| Turn State | Draw / Move State | Victory Celebration |
+| :---: | :---: | :---: |
+| <img src="./assets/ttt1.PNG" width="240" alt="Tic Tac Toe Turn State Preview" /> | <img src="./assets/ttt2.PNG" width="240" alt="Tic Tac Toe Move Preview" /> | <img src="./assets/ttt3.PNG" width="240" alt="Tic Tac Toe Victory Preview" /> |
 
-# OR using Yarn
-yarn start
+</div>
+
+---
+
+## ✨ Key Features
+
+- 🎮 **2-Player Gameplay**: Classic 3x3 grid mechanics supporting turn-based strategy for Player X and Player O.
+- ⚡ **Real-Time Win/Draw Detection**: Dynamic algorithm scanning 8 potential winning conditions (rows, columns, diagonals) after every turn.
+- 🏆 **Spring & Loop Victory Animations**: Custom React Native `Animated` API celebration modals (spring scaling, fade-in opacity, bouncing emojis).
+- 🔔 **Interactive Snackbar Notifications**: Native alerts via `react-native-snackbar` preventing moves on filled boxes or completed games.
+- 🎨 **FontAwesome Vector Icons**: Clean `FontAwesome` vector graphics for Cross (`times`) and Circle (`circle-thin`) markers.
+- 🔄 **Instant Game Reset**: One-tap game state reset function to start a new match instantly.
+
+---
+
+## 🛠️ Tech Stack & Tools
+
+- **Framework**: [React Native](https://reactnative.dev/) (v0.87.1)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Icons**: [@react-native-vector-icons/fontawesome](https://github.com/react-native-vector-icons/react-native-vector-icons) (v13.1.4)
+- **Toast Alerts**: [react-native-snackbar](https://github.com/coamm/react-native-snackbar) (v3.0.1)
+- **UI & Layout**: React Native `FlatList` (3-column grid), `Animated` API, `Pressable`, `react-native-safe-area-context`
+- **Build Tools**: Metro Bundler, Babel, ESLint, Prettier
+
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to set up and run the application on your local machine or emulator.
+
+### Prerequisites
+
+Ensure your React Native development environment is ready:
+- **Node.js**: `>= 22.11.0`
+- **npm** or **yarn**
+- **Android Studio** (for Android Emulator) or **Xcode** (macOS only, for iOS Simulator)
+
+### Installation
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/imtiazaly/Tic-Tac-Toe-App-React-Native.git
+   cd Tic-Tac-Toe-App-React-Native
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start Metro Bundler**
+   ```bash
+   npm start
+   ```
+
+4. **Run the App**
+   - **Android**:
+     ```bash
+     npm run android
+     ```
+   - **iOS**:
+     ```bash
+     cd ios && pod install && cd ..
+     npm run ios
+     ```
+
+---
+
+## 🧠 Logic & Architecture Highlights
+
+### 1. Win Condition Checking Matrix (`src/App.tsx`)
+Scans array indices to determine match outcomes:
+```typescript
+const checkIsWinner = (currentGameState: string[]) => {
+  const winningConditions = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+    [0, 4, 8], [2, 4, 6]              // Diagonals
+  ];
+
+  for (const condition of winningConditions) {
+    const [a, b, c] = condition;
+    if (
+      currentGameState[a] === currentGameState[b] &&
+      currentGameState[a] === currentGameState[c] &&
+      currentGameState[a] !== 'empty'
+    ) {
+      return currentGameState[a];
+    }
+  }
+  return null;
+};
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+### 2. Spring & Loop Celebration Animation
+```typescript
+Animated.parallel([
+  Animated.spring(celebrationScale, {
+    toValue: 1,
+    friction: 5,
+    tension: 60,
+    useNativeDriver: true,
+  }),
+  Animated.loop(
+    Animated.sequence([
+      Animated.timing(emojiTranslate, { toValue: -15, duration: 600, useNativeDriver: true }),
+      Animated.timing(emojiTranslate, { toValue: 15, duration: 600, useNativeDriver: true }),
+    ])
+  )
+]).start();
 ```
 
-### iOS
+---
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## 📂 Project Structure
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```text
+Tic-Tac-Toe-App-React-Native/
+├── assets/                  # App preview screenshots (ttt1.PNG, ttt2.PNG, ttt3.PNG)
+├── src/
+│   ├── components/
+│   │   └── Icons.tsx        # FontAwesome icon renderer component
+│   └── App.tsx              # Game state logic, grid rendering, & animations
+├── index.js                 # App entry point
+├── package.json             # Project dependencies and scripts
+├── tsconfig.json            # TypeScript configuration
+└── README.md                # Project documentation
 ```
 
-Then, and every time you update your native dependencies, run:
+---
 
-```sh
-bundle exec pod install
-```
+## 👨‍💻 Learning Objectives
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+This project was built to explore core mobile application and game development patterns:
+- Managing multi-state array grids (`gameState`) with TypeScript.
+- Implementing game algorithms (Win/Draw matrix checking).
+- Creating smooth UI animations using React Native's native-driven `Animated` API.
+- Integrating external native libraries like `react-native-snackbar` and `@react-native-vector-icons`.
 
-```sh
-# Using npm
-npm run ios
+---
 
-# OR using Yarn
-yarn ios
-```
+## 📄 License
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+This project is open-source and available under the [MIT License](LICENSE).
